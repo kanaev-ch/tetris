@@ -8,3 +8,5 @@ extern const float HML;
 
 extern const float WMR;
 extern const float HMR;
+
+extern bool FL;

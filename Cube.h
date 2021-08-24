@@ -1,6 +1,8 @@
 #pragma once
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Shape.h"
+#include "Data.h"
 
 class Cube ://cube - component of future figures
 	public Shape//inherit from virtual Class shape, in future will create Polymorph claster from Shape
@@ -9,6 +11,7 @@ private:
 	float x, y;//coords of cube on screen
 	sf::RectangleShape rect_cube;//rectangle of cube
 public:
+	Cube();
 	Cube(float, float);
 	~Cube();
 
@@ -19,6 +22,6 @@ public:
 
 	void DRAW(sf::RenderWindow&)const;//draw cube
 
-	void MOVE(float, float);
+	void MOVE(float, float, float);
 };
 

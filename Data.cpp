@@ -11,3 +11,5 @@ extern const float HML = 800;
 //size of main right rect
 extern const float WMR = 100;
 extern const float HMR = 800;
+
+bool FL = false;//Figure Live

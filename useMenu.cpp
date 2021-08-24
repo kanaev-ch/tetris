@@ -1,7 +1,6 @@
 #include "Menu.h"
 #include "Game.h"
 
-
 int MENU(sf::RenderWindow & window_)//func of main menu, game calls inside
 {
 	Menu menu;//create obj of Menu
