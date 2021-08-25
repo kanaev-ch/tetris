@@ -4,8 +4,8 @@
 #include "Shape.h"
 #include "Data.h"
 
-class Cube ://cube - component of future figures
-	public Shape//inherit from virtual Class shape, in future will create Polymorph claster from Shape
+class Cube //cube - component of future figures
+//	:public Shape//inherit from virtual Class shape, in future will create Polymorph claster from Shape
 {
 private:
 	float x, y;//coords of cube on screen

@@ -28,7 +28,7 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 //	Figure figure(Figure::gstick);
 //	Figure* f = new Figure(Figure::gstick);
-	Figure* f = NULL;
+	Figure* f = NULL;//pointer because each cycle create new obj of Figure from heap, FL is live or delete this pointer
 	FloorArray floor_array;
 
 	while (window_.isOpen())
@@ -49,14 +49,14 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 				window_.close();
 		}
 
-		if (FL) floor_array.COLLISION(f);
+		if (FL) floor_array.COLLISION(*f);
 
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->MOVE(0, 0.1f, time);*/
 
 		if (FL) f->MOVE(0, 0.1f, time);
 
-		floor_array.MOVE(0, 0.2f, time);
+//		floor_array.MOVE(0, 0.2f, time);
 
 		window_.clear();
 		

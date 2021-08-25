@@ -11,7 +11,7 @@ private:
 	float x, y;
 	Cube cube1, cube2, cube3, cube4;
 //	const Type type;
-	int type;
+	int type;//instead Enum (type of Figure), 1 - gstick and other...
 public:
 	Figure();
 //	Figure(const Type &, float, float);
