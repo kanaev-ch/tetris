@@ -54,6 +54,11 @@ void Cube::MOVE(float dx_, float dy_, float time_)//move cube
 		FL = false;
 	}*/
 	y += dy_ * time_;
-	x += dx_ * time_;
+//	x += dx_ * time_;
+	x += dx_;//time not need multiply at dx, because every time different values offset by X
+
+//	std::cout << x << std::endl;
+	x = float(int(x) / 50 * 50) + 10;//round for moving cubes to the left-right only by 50 px
+
 	this->rect_cube.setPosition(x, y);
 }

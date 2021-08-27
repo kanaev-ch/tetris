@@ -3,109 +3,70 @@
 
 
 FloorArray::FloorArray()
-	:sz(0)
+	:sz(10)//Create default bottom arr of 10 elements
 {
-//	size_t s = 100;
-	
-//	p[0] = new Figure(Figure::gstick, 10, 60);
-//	p[1] = new Figure(Figure::gstick, 110, 60);
-//	p[2] = new Figure(Figure::gstick, 210, 60);
-/*	Figure* p = new Figure[10];
-	p[0] = Figure(1, 10, 60);
-	p[1] = Figure(1, 110, 60);
-	p[2] = Figure(1, 210, 60);
-	shape = p;*/
+	shape = new Cube[sz];//from heap
+	for (size_t i = 0; i < sz; i++)
+	{
+		shape[i] = Cube(float(i) * 1 * 50+10, H-WB-50);
+	}
 }
 
 
 FloorArray::~FloorArray()
 {
-//	delete[]shape;
+	delete[]shape;//free heap
 }
 
 //void FloorArray::COLLISION(Figure * f_)
-void FloorArray::COLLISION(Figure & f_)
+void FloorArray::COLLISION(Figure & f_)//func collision of Figures cubes and bottom Cubes
 {
-//	if (f_->CUBE1().Y() > 760 || f_->CUBE2().Y() > 760 || f_->CUBE3().Y() > 760 || f_->CUBE4().Y() > 760)
-//	if (f_.CUBE1().Y() > 760 || f_.CUBE2().Y() > 760 || f_.CUBE3().Y() > 760 || f_.CUBE4().Y() > 760)
-/*	if (f_.CUBE1().Y() > 760 || f_.CUBE2().Y() > 760 || f_.CUBE3().Y() > 760 || f_.CUBE4().Y() > 760)
+	size_t old_sz = sz;//save temp old size arr
+	for (size_t i = 0; i < old_sz; i++)
 	{
-		FL = false;
-//		++sz;
-//		shape[sz - 1] = f_;
-		sz += 4;
-		shape[sz - 4] = f_.CUBE1();
-		shape[sz - 3] = f_.CUBE2();
-		shape[sz - 2] = f_.CUBE3();
-		shape[sz - 1] = f_.CUBE4();
-
-		std::cout << sz << std::endl;*/
-
-/*		if (!sz)
+		if (sz >= 160) exit(0);//Temporary PLUG for exit if array of CUBEs overload, means this cycle (of move down figure) is infinity
+		if ( f_.CUBE1().Y() + 50 > shape[i].Y() && f_.CUBE1().X() == shape[i].X() ||
+			 f_.CUBE2().Y() + 50 > shape[i].Y() && f_.CUBE2().X() == shape[i].X() ||
+			 f_.CUBE3().Y() + 50 > shape[i].Y() && f_.CUBE3().X() == shape[i].X() ||
+			 f_.CUBE4().Y() + 50 > shape[i].Y() && f_.CUBE4().X() == shape[i].X() )
 		{
-			++sz;
-			shape = new Figure[sz];
-			shape[sz - 1] = f_;
-		}
-		else {
-			++sz;
-			Figure * p = new Figure[sz];
-			for (int i = 0; i < sz - 1; i++)
+			FL = false;//Figure not live
+			sz += 4;//increase arr size
+			Cube* p = new Cube[sz];//create new arr from heap
+			for (size_t j = 0; j < old_sz; j++)//copy from old to new arr
 			{
-				p[i] = shape[i];
-//				delete []shape;
+				p[j] = shape[j];
 			}
-			delete[]shape;
-			shape = new Figure[sz];
-			shape = p;
-			shape[sz] = f_;
-			delete[]p;
-		}*/
-//	for (int i = 0; i < sz; i++)
-	for (int i = 0; i < sz; i++)
-	{
-		if (sz >= 100) exit(0);//Temporary PLUG for exit if array of CUBEs overload, means next IF cycle (of move down figure) is infinity
-		if (f_.CUBE1().Y() + 50 > shape[i].Y() || f_.CUBE2().Y() + 50 > shape[i].Y() || f_.CUBE3().Y() + 50 > shape[i].Y() || f_.CUBE4().Y() + 50 > shape[i].Y())
-		{
-			FL = false;
-			sz += 4;
-			shape[sz - 4] = f_.CUBE1();
-			shape[sz - 3] = f_.CUBE2();
-			shape[sz - 2] = f_.CUBE3();
-			shape[sz - 1] = f_.CUBE4();
 
-			std::cout << sz << std::endl;
+			//add last figure to bottom arr
+			p[sz - 4] = f_.CUBE1();
+			p[sz - 3] = f_.CUBE2();
+			p[sz - 2] = f_.CUBE3();
+			p[sz - 1] = f_.CUBE4();
+
+			//round X Y in bottom arr
+			p[sz - 4].X(float(int(f_.CUBE1().X()))); p[sz - 4].Y(float(int(f_.CUBE1().Y())));
+			p[sz - 3].X(float(int(f_.CUBE2().X()))); p[sz - 3].Y(float(int(f_.CUBE2().Y())));
+			p[sz - 2].X(float(int(f_.CUBE3().X()))); p[sz - 2].Y(float(int(f_.CUBE3().Y())));
+			p[sz - 1].X(float(int(f_.CUBE4().X()))); p[sz - 1].Y(float(int(f_.CUBE4().Y())));
+
+			delete[]shape;//free heap from old arr
+			shape = p;//init new increased arr
+
+
+//			std::cout << sz << std::endl;
+			std::cout << i << " " << shape[i].X() << " " << shape[i].Y() << std::endl;
 			break;
 		}
-//		std::cout << i << std::endl;
-//		std::cout << shape[i].Y() << std::endl;
-//		std::cout << shape[sz-1].Y() << std::endl;
-	}
-	if (f_.CUBE1().Y() > 760 || f_.CUBE2().Y() > 760 || f_.CUBE3().Y() > 760 || f_.CUBE4().Y() > 760)
-	{
-		FL = false;
-		sz += 4;
-		shape[sz - 4] = f_.CUBE1();
-		shape[sz - 3] = f_.CUBE2();
-		shape[sz - 2] = f_.CUBE3();
-		shape[sz - 1] = f_.CUBE4();
-
-		std::cout << sz << std::endl;
+//		std::cout << f_.CUBE1().X() << " " << shape[i].X() << std::endl;
 	}
 }
 
-void FloorArray::DRAW(sf::RenderWindow & window_)const
+void FloorArray::DRAW(sf::RenderWindow & window_)const//draw arr of bottom Cubes
 {
 	if (sz)
 	{
-//		shape[0].DRAW(window_);
-		for (int i = 0; i < sz; i++)
+		for (size_t i = 0; i < sz; i++)
 			shape[i].DRAW(window_);
 	}
 }
-
-/*void FloorArray::MOVE(float x_, float y_, float time_)
-{
-	for (int i = 0; i < 3; i++)
-		shape[i].MOVE(x_, y_, time_);
-}*/

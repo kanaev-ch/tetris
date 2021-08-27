@@ -8,10 +8,8 @@
 class FloorArray
 {
 private:
-//	Figure* shape;
-//	Figure shape[100];
-	Cube shape[100];
-	int sz;
+	Cube* shape;//arr of bottom Cubes
+	size_t sz;//size of this arr
 public:
 	FloorArray();
 	~FloorArray();
@@ -20,6 +18,5 @@ public:
 	void COLLISION(Figure &);
 
 	void DRAW(sf::RenderWindow &)const;
-//	void MOVE(float, float, float);
 };
 

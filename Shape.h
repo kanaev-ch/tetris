@@ -10,6 +10,7 @@ public:
 
 	virtual void DRAW(sf::RenderWindow&)const = 0;//virt func for future polymirph class
 	virtual void MOVE(float, float, float) = 0;
+	virtual float Y()const = 0;
 
 //	int SZ();
 };

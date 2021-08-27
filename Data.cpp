@@ -1,15 +1,21 @@
 #include "Data.h"
 
+//width of border line screen
+const float WB = 10;
+
 //size of All screen
-const int W = 630;
-const int H = 820;
+const int W = 650 + int(WB) * 3;
+const int H = 800 + int(WB) * 2;//HEIGHT game screen 800px
+//const int H = 600 + int(WB) * 2;//HEIGHT game screen 600px
 
 //size of main left rect
-extern const float WML = 500;
-extern const float HML = 800;
+const float WML = 500;
+const float HML = H - WB*2;
 
 //size of main right rect
-extern const float WMR = 100;
-extern const float HMR = 800;
+const float WMR = W - WML - WB * 3;
+const float HMR = H - WB*2;
 
 bool FL = false;//Figure Live
+
+bool ML = true;

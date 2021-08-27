@@ -2,14 +2,14 @@
 
 
 
-Figure::Figure()
+/*Figure::Figure()
 {
-}
+}*/
 
-//Figure::Figure(const Type & t_, float x_, float y_)
-//	:type(t_), x(x_), y(y_)
-Figure::Figure(int t_, float x_, float y_)
+Figure::Figure(const Type & t_, float x_, float y_)
 	:type(t_), x(x_), y(y_)
+//Figure::Figure(int t_, float x_, float y_)
+//	:type(t_), x(x_), y(y_)
 {
 	cube2 = Cube(x, y - 50);
 	cube1 = Cube(x, y);
@@ -55,4 +55,9 @@ void Figure::MOVE(float x_, float y_, float time_)
 	cube2.MOVE(x_, y_, time_);
 	cube3.MOVE(x_, y_, time_);
 	cube4.MOVE(x_, y_, time_);
+}
+
+void Figure::COLLISION()
+{
+	
 }
