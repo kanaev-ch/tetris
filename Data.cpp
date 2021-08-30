@@ -18,4 +18,4 @@ const float HMR = H - WB*2;
 
 bool FL = false;//Figure Live
 
-bool ML = true;
+float SPEED_FDOWN = .05f;//Speed of falling down figure

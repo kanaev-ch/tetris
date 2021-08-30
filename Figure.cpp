@@ -49,15 +49,18 @@ void Figure::DRAW(sf::RenderWindow & window_)const
 	cube4.DRAW(window_);
 }
 
-void Figure::MOVE(float x_, float y_, float time_)
+/*void Figure::MOVE(float x_, float y_, float time_)
+{
+	cube1.MOVE(x, y, time_);
+	cube2.MOVE(x, y, time_);
+	cube3.MOVE(x, y, time_);
+	cube4.MOVE(x, y, time_);
+}*/
+
+void Figure::MOVE_DOWN(float x_, float y_, float time_)//figures falls down 
 {
 	cube1.MOVE(x_, y_, time_);
 	cube2.MOVE(x_, y_, time_);
 	cube3.MOVE(x_, y_, time_);
 	cube4.MOVE(x_, y_, time_);
-}
-
-void Figure::COLLISION()
-{
-	
 }

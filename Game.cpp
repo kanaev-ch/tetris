@@ -40,6 +40,7 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 			f = new Figure(Figure::gstick, 310, 60);
 //			f = new Figure(1, 310, 60);
 			FL = true;
+			SPEED_FDOWN = .05f;
 		}
 
 		sf::Event event;
@@ -51,45 +52,26 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 			//Block of moving to the left-right only at 50 px by releasing key
 			//It must be in while Event cycle for one-time exec, round in Cube::MOVE
-/*			if (event.type == sf::Event::KeyReleased)
-			{
-				if (event.key.code == sf::Keyboard::Left)
-				{
-					if (FL) f->MOVE(-20.f, 0, time);//different values, I DON'T KNOW WHY
-					std::cout << f->CUBE1().X() << std::endl;
-				}
-			}
-			if (event.type == sf::Event::KeyReleased)
-			{
-				if (event.key.code == sf::Keyboard::Right)
-				{
-					if (FL) f->MOVE(40.f, 0, time);//different values, I DON'T KNOW WHY
-					std::cout << f->CUBE1().X() << std::endl;
-				}
-			}*/
-
-			//Block of moving to the left-right only at 50 px by releasing key
-			//It must be in while Event cycle for one-time exec, round in Cube::MOVE
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
-				if (FL) f->MOVE(-50.f, 0, time);//time not need multiply at dx, because every time different values offset by X
-//				std::cout << f->CUBE1().X() << std::endl;
+				if (FL) floor_array.MOVE_LEFT_AND_COLLISION(*f, -50.f, 0, time);//func move figure to the left and collision with edges and cross bottom figures
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
-				if (FL) f->MOVE(50.f, 0, time);//time not need multiply at dx, because every time different values offset by X
-//				std::cout << f->CUBE1().X() << std::endl;
+				if (FL) floor_array.MOVE_RIGHT_AND_COLLISION(*f, 50.f, 0, time);//func move figure to the right and collision with edges and cross bottom figures
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				SPEED_FDOWN = 1.f;
 			}
 		}
 
-		if (FL) floor_array.COLLISION(*f);
+		if (FL) f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
+
+		if (FL) floor_array.BOTTOM_COLLISION(*f);//collision of figures whith bottom array
 
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->MOVE(0, 0.1f, time);*/
-
-		if (FL) f->MOVE(0, 0.3f, time);
-
-//		floor_array.MOVE(0, 0.2f, time);
 
 		window_.clear();
 		
@@ -98,8 +80,6 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->DRAW(window_);*/
-
-//		if (FL) f->LR_MOVE();
 
 		if (FL) f->DRAW(window_);
 		if (!FL) delete f;

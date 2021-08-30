@@ -13,4 +13,4 @@ extern const float HMR;
 
 extern bool FL;
 
-extern bool ML;
+extern float SPEED_FDOWN;

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Cube.h"
+#include "Data.h"
 
 class Figure//:
 //	public Shape
@@ -25,8 +26,7 @@ public:
 	Cube & CUBE4();
 
 	void DRAW(sf::RenderWindow&)const;
-	void MOVE(float, float, float);
-
-	void COLLISION();
+//	void MOVE(float, float, float);
+	void MOVE_DOWN(float, float, float);
 };
 

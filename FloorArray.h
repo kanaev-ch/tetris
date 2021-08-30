@@ -15,7 +15,9 @@ public:
 	~FloorArray();
 
 //	void COLLISION(Figure *);
-	void COLLISION(Figure &);
+	void BOTTOM_COLLISION(Figure &);
+	void MOVE_LEFT_AND_COLLISION(Figure &, float, float, float);
+	void MOVE_RIGHT_AND_COLLISION(Figure &, float, float, float);
 
 	void DRAW(sf::RenderWindow &)const;
 };
