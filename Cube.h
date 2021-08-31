@@ -23,5 +23,7 @@ public:
 	void DRAW(sf::RenderWindow&)const;//draw cube
 
 	void MOVE(float, float, float);
+
+	void SETPOSITION(float, float);
 };
 

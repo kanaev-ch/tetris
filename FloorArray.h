@@ -7,7 +7,7 @@
 
 class FloorArray
 {
-private:
+//private:
 	Cube* shape;//arr of bottom Cubes
 	size_t sz;//size of this arr
 public:
@@ -18,6 +18,8 @@ public:
 	void BOTTOM_COLLISION(Figure &);
 	void MOVE_LEFT_AND_COLLISION(Figure &, float, float, float);
 	void MOVE_RIGHT_AND_COLLISION(Figure &, float, float, float);
+
+	void CHK_DEL_LINE();
 
 	void DRAW(sf::RenderWindow &)const;
 };
