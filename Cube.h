@@ -10,6 +10,7 @@ class Cube //cube - component of future figures
 private:
 	float x, y;//coords of cube on screen
 	sf::RectangleShape rect_cube;//rectangle of cube
+	bool same;//flag if elements is same with other 10 elements in line
 public:
 	Cube();
 	Cube(float, float);
@@ -19,6 +20,9 @@ public:
 	void X(float);
 	float Y()const;
 	void Y(float);
+
+	void SAME(bool);
+	bool SAME()const;
 
 	void DRAW(sf::RenderWindow&)const;//draw cube
 

@@ -69,7 +69,8 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 		if (FL) f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
 
 		if (FL) floor_array.BOTTOM_COLLISION(*f);//collision of figures whith bottom array
-		if (!FL) floor_array.CHK_DEL_LINE();
+		if (!FL) floor_array.MARK_FOR_DEL_LINES();
+		if (LINES_FOR_DEL) floor_array.DEL_LINES();
 
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->MOVE(0, 0.1f, time);*/
@@ -89,7 +90,7 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 		window_.display();
 
-		window_.setKeyRepeatEnabled(false);
+//		window_.setKeyRepeatEnabled(false);
 	}
 
 /*	for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)

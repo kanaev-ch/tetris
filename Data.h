@@ -14,3 +14,5 @@ extern const float HMR;
 extern bool FL;
 
 extern float SPEED_FDOWN;
+
+extern int LINES_FOR_DEL;

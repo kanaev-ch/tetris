@@ -10,6 +10,8 @@ class FloorArray
 //private:
 	Cube* shape;//arr of bottom Cubes
 	size_t sz;//size of this arr
+
+	void MARK_LINE(int& n, int);
 public:
 	FloorArray();
 	~FloorArray();
@@ -19,8 +21,10 @@ public:
 	void MOVE_LEFT_AND_COLLISION(Figure &, float, float, float);
 	void MOVE_RIGHT_AND_COLLISION(Figure &, float, float, float);
 
-	void CHK_DEL_LINE();
+	void MARK_FOR_DEL_LINES();
+	void DEL_LINES();
 
 	void DRAW(sf::RenderWindow &)const;
+
 };
 

@@ -63,8 +63,6 @@ void FloorArray::BOTTOM_COLLISION(Figure & f_)//func collision of Figures cubes 
 
 			FL = false;//Figure not live
 
-			std::cout << "!!!OOOOO!!!" << sz << std::endl;
-
 			break;
 		}
 	}
@@ -122,11 +120,137 @@ void FloorArray::MOVE_RIGHT_AND_COLLISION(Figure& f_, float x_, float y_, float 
 	f_.CUBE4().MOVE(x, y_, time_);
 }
 
-void FloorArray::CHK_DEL_LINE()
+void FloorArray::MARK_LINE(int & n, int line_num)//func for mark 10 same elements when it founded
 {
-	for (size_t i = 10; i < sz; i++)
+	if (n == 10)
 	{
-		std::cout << sz << std::endl;
+		n = 0;
+		LINES_FOR_DEL++;//increment count of same lines
+		for (size_t i = 10; i < sz; i++)//chk arr from begin to last founded element and mark elements of line_num
+		{
+			if (shape[i].Y() == line_num)
+				shape[i].SAME(true);
+		}
+	}
+}
+
+void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remove if in line are 10 same Cubes
+{
+	int n760 = 0; int n710 = 0; int n660 = 0; int n610 = 0;	int n560 = 0; int n510 = 0;	int n460 = 0; int n410 = 0;
+	int n360 = 0; int n310 = 0;	int n260 = 0; int n210 = 0;	int n160 = 0; int n110 = 0;	int n60 = 0;//counters for chk if inline Cubes are 10
+	for (size_t i = 10; i < sz; i++)//chk floor arr if inline are 10 same elements
+	{
+		//Block of increment this vars
+		if (shape[i].Y() == 760) n760++;
+		if (shape[i].Y() == 710) n710++;
+		if (shape[i].Y() == 660) n660++;
+		if (shape[i].Y() == 610) n610++;
+		if (shape[i].Y() == 560) n560++;
+		if (shape[i].Y() == 510) n510++;
+		if (shape[i].Y() == 460) n460++;
+		if (shape[i].Y() == 410) n410++;
+		if (shape[i].Y() == 360) n360++;
+		if (shape[i].Y() == 310) n310++;
+		if (shape[i].Y() == 260) n260++;
+		if (shape[i].Y() == 210) n210++;
+		if (shape[i].Y() == 160) n160++;
+		if (shape[i].Y() == 110) n110++;
+		if (shape[i].Y() == 60) n60++;
+		//Block of mark if elements inline are 10
+		if (n760 == 10)	MARK_LINE(n760, 760);
+		if (n710 == 10)	MARK_LINE(n710, 660);
+		if (n660 == 10)	MARK_LINE(n660, 660);
+		if (n610 == 10)	MARK_LINE(n610, 610);
+		if (n560 == 10)	MARK_LINE(n560, 560);
+		if (n510 == 10)	MARK_LINE(n510, 510);
+		if (n460 == 10)	MARK_LINE(n460, 460);
+		if (n410 == 10)	MARK_LINE(n410, 410);
+		if (n360 == 10)	MARK_LINE(n360, 360);
+		if (n310 == 10)	MARK_LINE(n310, 310);
+		if (n260 == 10)	MARK_LINE(n260, 260);
+		if (n210 == 10)	MARK_LINE(n210, 210);
+		if (n160 == 10)	MARK_LINE(n160, 160);
+		if (n60 == 10)	MARK_LINE(n60, 60);
+/*		{
+			n760 = 0;
+			LINES_FOR_DEL++;
+			for (size_t i = 10; i < sz; i++)
+			{
+				if (shape[i].Y() == 760)
+					shape[i].SAME(true);
+			}
+		}
+		if (shape[i].Y() == 710)
+			n710++;
+		if (n710 == 10)
+		{
+			n710 = 0;
+			LINES_FOR_DEL++;
+			for (size_t i = 10; i < sz; i++)
+			{
+				if (shape[i].Y() == 710)
+					shape[i].SAME(true);
+			}
+		}
+		if (shape[i].Y() == 660)
+			n660++;
+		if (n660 == 10)
+		{
+			n660 = 0;
+			LINES_FOR_DEL++;
+			for (size_t i = 10; i < sz; i++)
+			{
+				if (shape[i].Y() == 660)
+					shape[i].SAME(true);
+			}
+		}
+		if (shape[i].Y() == 610)
+			n610++;
+		if (n610 == 10)
+		{
+			n610 = 0;
+			LINES_FOR_DEL++;
+			for (size_t i = 10; i < sz; i++)
+			{
+				if (shape[i].Y() == 610)
+					shape[i].SAME(true);
+			}
+		}*/
+//		if (shape[i].SAME())
+//			std::cout << shape[i].Y() << " ";
+	}
+//	std::cout << LINES_FOR_DEL << "\n";
+}
+
+void FloorArray::DEL_LINES()//func remove marked elements
+{
+	size_t new_sz = sz - LINES_FOR_DEL * 10;//new lower size of arr
+	Cube* p = new Cube[new_sz];//new lower arr
+	int j = 0;//var for increment new arr
+	float s = 0;//var for memory first same Y, in future all upper elements move down
+	for (size_t i = 0; i < sz; i++)//cycle of ald arr
+	{
+		if (!shape[i].SAME())//if not marked -> copy to new arr
+		{
+			p[j] = shape[i]; //copy to new arr
+			j++;//increment old arr
+		}
+
+		if (shape[i].SAME()) { if (!s) s = shape[i].Y(); }//remember first same Y
+	}
+	delete[]shape;//remove old arr
+	shape = p;//init old to new
+	sz = new_sz;//new lower size of arr
+	int l = LINES_FOR_DEL;//temp var number of lines for delete
+	LINES_FOR_DEL = 0;//discharge to default num of global lines for delete
+
+	for (size_t i = 10; i < sz; i++)//chk all new arr for move all elements down
+	{
+		if (shape[i].Y() < s)
+		{
+			shape[i].MOVE(0, float(l) * 50, 1);//how many lines move down
+			shape[i].SETPOSITION(shape[i].X(), shape[i].Y());//set new posotion of Cubes for draw
+		}
 	}
 }
 

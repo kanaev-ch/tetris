@@ -19,3 +19,5 @@ const float HMR = H - WB*2;
 bool FL = false;//Figure Live
 
 float SPEED_FDOWN = 100.f;//Speed of falling down figure
+
+extern int LINES_FOR_DEL = 0;//Global var count of removing lines

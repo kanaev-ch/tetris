@@ -1,8 +1,9 @@
 #include "Cube.h"
 
 Cube::Cube()
+	:x(0), y(0), same(false)
 {
-	x = 0; y = 0;
+//	x = 0; y = 0;
 	rect_cube.setSize(sf::Vector2f(50, 50));//size of base cube
 	rect_cube.setFillColor(sf::Color::Green);//color of base cube
 	rect_cube.setPosition(x, y);//position of cube on screen
@@ -10,8 +11,9 @@ Cube::Cube()
 }
 
 Cube::Cube(float x_, float y_)
+	:x(x_), y(y_), same(false)
 {
-	x = x_; y = y_;
+//	x = x_; y = y_;
 	rect_cube.setSize(sf::Vector2f(50, 50));//size of base cube
 	rect_cube.setFillColor(sf::Color::Green);//color of base cube
 	rect_cube.setPosition(x, y);//position of cube on screen
@@ -39,6 +41,15 @@ float Cube::Y()const
 void Cube::Y(float y_)
 {
 	y = y_;
+}
+
+void Cube::SAME(bool s_)
+{
+	same = s_;
+}
+bool Cube::SAME()const
+{
+	return same;
 }
 
 void Cube::DRAW(sf::RenderWindow& window_)const//draw cube
