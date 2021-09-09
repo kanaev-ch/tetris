@@ -9,6 +9,22 @@ static float TIME(sf::Clock& c_)//func for binding to time
 	return time;
 }
 
+static Figure * RAND_CHOOSE_FIGURE()
+{
+	srand((unsigned)time(NULL)); rand(); rand();
+	Figure* p = NULL;
+	int r = rand() % 5 + 1;
+	switch (r)
+	{
+	case 1: p = new Figure(Figure::gstick, 310, 60); break;
+	case 2: p = new Figure(Figure::stick, 310, 60); break;
+	case 3: p = new Figure(Figure::cube, 310, 60); break;
+	case 4: p = new Figure(Figure::zz, 310, 10); break;
+	case 5: p = new Figure(Figure::t, 310, 60); break;
+	}
+	return p;
+}
+
 //func for draw main rects in menu and game, it calls from game func and menu func
 void DRAW_MAIN_RECT(sf::RenderWindow& window_, sf::RectangleShape& main_rect_, float x_, float y_)
 {
@@ -37,8 +53,13 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 	
 		if (!FL)
 		{
-			f = new Figure(Figure::gstick, 310, 60);
+//			f = new Figure(Figure::gstick, 310, 60);
+//			f = new Figure(Figure::stick, 310, 60);
+//			f = new Figure(Figure::cube, 310, 60);
+//			f = new Figure(Figure::zz, 310, 10);
+//			f = new Figure(Figure::t, 310, 60);
 //			f = new Figure(1, 310, 60);
+			f = RAND_CHOOSE_FIGURE();
 			FL = true;
 			SPEED_FDOWN = .05f;
 		}
@@ -64,13 +85,19 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 			{
 				SPEED_FDOWN = 1.f;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+//				f->ROTATE();
+				if (FL) floor_array.ROTATE(*f);
+			}
 		}
 
 		if (FL) f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
 
 		if (FL) floor_array.BOTTOM_COLLISION(*f);//collision of figures whith bottom array
 		if (!FL) floor_array.MARK_FOR_DEL_LINES();
-		if (LINES_FOR_DEL) floor_array.DEL_LINES();
+		if (LINES_FOR_DEL) floor_array.DEL_LINES();//Inside is LINES_FOR_DEL = 0;//discharge to default num of global lines for delete
+//		floor_array.GRAVITY(0, SPEED_FDOWN, time);
 
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->MOVE(0, 0.1f, time);*/

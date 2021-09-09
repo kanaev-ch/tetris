@@ -78,7 +78,7 @@ void FloorArray::MOVE_LEFT_AND_COLLISION(Figure& f_, float x_, float y_, float t
 	}
 	for (size_t i = 0; i < sz; i++)
 	{
-		//block of check of crossing figure with every bottom array member, and don't cross if
+		//block of check of crossing figure with every bottom array member from the left side, and don't cross it
 		if (f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() < shape[i].Y() + 50 && f_.CUBE1().X() == shape[i].X() + 50 ||
 			f_.CUBE2().Y() + 50 >= shape[i].Y() && f_.CUBE2().Y() < shape[i].Y() + 50 && f_.CUBE2().X() == shape[i].X() + 50 ||
 			f_.CUBE3().Y() + 50 >= shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() == shape[i].X() + 50 ||
@@ -104,7 +104,7 @@ void FloorArray::MOVE_RIGHT_AND_COLLISION(Figure& f_, float x_, float y_, float 
 	}
 	for (size_t i = 0; i < sz; i++)
 	{
-		//block of check of crossing figure with every bottom array member, and don't cross if
+		//block of check of crossing figure with every bottom array member from the right side, and don't cross it
 		if (f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() < shape[i].Y() + 50 && f_.CUBE1().X() + 50 == shape[i].X() ||
 			f_.CUBE2().Y() + 50 >= shape[i].Y() && f_.CUBE2().Y() < shape[i].Y() + 50 && f_.CUBE2().X() + 50 == shape[i].X() ||
 			f_.CUBE3().Y() + 50 >= shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() + 50 == shape[i].X() ||
@@ -118,6 +118,81 @@ void FloorArray::MOVE_RIGHT_AND_COLLISION(Figure& f_, float x_, float y_, float 
 	f_.CUBE2().MOVE(x, y_, time_);
 	f_.CUBE3().MOVE(x, y_, time_);
 	f_.CUBE4().MOVE(x, y_, time_);
+}
+
+int FloorArray::ROTATE(Figure& f_)//Func of rotate Figures and collision with edges and bottom array
+{
+	bool r = true;//flag do rotate figure or not
+
+	if (f_.type == Figure::cube)//deny for rotate if CUBE, it doesn't rotate
+	{
+		r = false;
+		return 0;//exit if Cube, don't exec down code
+	}
+
+	//block of collision with bottom array
+	for (size_t i = 10; i < sz; i++)
+	{
+		//Collision Gstick with bottom array in rotate
+		if (f_.type == Figure::gstick && (f_.position == Figure::up || f_.position == Figure::down))
+		{
+			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+			if (f_.CUBE1().X() + 50 == shape[i].X() && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+		}
+
+		//Collision Stick with bottom array in rotate
+		if (f_.type == Figure::stick && f_.position == Figure::up)
+		{
+			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+			if (f_.CUBE1().X() + 50 == shape[i].X() && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+			if (f_.CUBE1().X() + 100 == shape[i].X() && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+		}
+
+		//Collision ZZ with bottom array in rotate
+		if (f_.type == Figure::zz && f_.position == Figure::left)
+		{
+			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+		}
+
+		//Collision T with bottom array in rotate
+		if (f_.type == Figure::t && (f_.position == Figure::left || f_.position == Figure::right))
+		{
+			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+			if (f_.CUBE1().X() + 50 == shape[i].X() && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+		}
+	}
+
+	//block of collision with edges
+	if (f_.type == Figure::gstick)//deny for rotate if Gstick and at the both edges
+	{
+		if (f_.CUBE1().X() == WB) r = false;
+		if (f_.CUBE1().X() + 50 == WML + WB) r = false;
+	}
+	if (f_.type == Figure::stick)//deny for rotate if Stick and at the both edges
+	{
+		if (f_.CUBE1().X() == WB) r = false;
+		if (f_.CUBE1().X() + 100 >= WML + WB) r = false;
+	}
+	if (f_.type == Figure::zz)//deny for rotate if ZZ and at the both edges
+	{
+		if (f_.CUBE1().X() == WB) r = false;
+	}
+	if (f_.type == Figure::t)//deny for rotate if T and at the both edges
+	{
+		if (f_.CUBE1().X() == WB) r = false;
+		if (f_.CUBE1().X() + 50 >= WML + WB) r = false;
+	}
+
+	if (r) f_.ROTATE();//if flag true -> rotate figure, ROTATE fun inside Figure Class
+	return 0;
 }
 
 void FloorArray::MARK_LINE(int & n, int line_num)//func for mark 10 same elements when it founded
@@ -138,6 +213,7 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 {
 	int n760 = 0; int n710 = 0; int n660 = 0; int n610 = 0;	int n560 = 0; int n510 = 0;	int n460 = 0; int n410 = 0;
 	int n360 = 0; int n310 = 0;	int n260 = 0; int n210 = 0;	int n160 = 0; int n110 = 0;	int n60 = 0;//counters for chk if inline Cubes are 10
+
 	for (size_t i = 10; i < sz; i++)//chk floor arr if inline are 10 same elements
 	{
 		//Block of increment this vars
@@ -158,7 +234,7 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 		if (shape[i].Y() == 60) n60++;
 		//Block of mark if elements inline are 10
 		if (n760 == 10)	MARK_LINE(n760, 760);
-		if (n710 == 10)	MARK_LINE(n710, 660);
+		if (n710 == 10)	MARK_LINE(n710, 710);
 		if (n660 == 10)	MARK_LINE(n660, 660);
 		if (n610 == 10)	MARK_LINE(n610, 610);
 		if (n560 == 10)	MARK_LINE(n560, 560);
@@ -216,10 +292,10 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 					shape[i].SAME(true);
 			}
 		}*/
-//		if (shape[i].SAME())
-//			std::cout << shape[i].Y() << " ";
+		if (shape[i].SAME())
+			std::cout << shape[i].Y() << " ";
 	}
-//	std::cout << LINES_FOR_DEL << "\n";
+	std::cout << LINES_FOR_DEL << "\n";
 }
 
 void FloorArray::DEL_LINES()//func remove marked elements
@@ -244,15 +320,21 @@ void FloorArray::DEL_LINES()//func remove marked elements
 	int l = LINES_FOR_DEL;//temp var number of lines for delete
 	LINES_FOR_DEL = 0;//discharge to default num of global lines for delete
 
+	//THIS BLOCK MUST BE REPROGRAMMING, MAY BE NOT
 	for (size_t i = 10; i < sz; i++)//chk all new arr for move all elements down
 	{
 		if (shape[i].Y() < s)
 		{
 			shape[i].MOVE(0, float(l) * 50, 1);//how many lines move down
-			shape[i].SETPOSITION(shape[i].X(), shape[i].Y());//set new posotion of Cubes for draw
+			shape[i].SETPOSITION(shape[i].X(), shape[i].Y());//set new position of Cubes for draw
 		}
 	}
 }
+
+/*void FloorArray::GRAVITY(float x_, float y_, float time_)
+{
+	;
+}*/
 
 void FloorArray::DRAW(sf::RenderWindow & window_)const//draw arr of bottom Cubes
 {
