@@ -45,6 +45,8 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 //	Figure figure(Figure::gstick);
 //	Figure* f = new Figure(Figure::gstick);
 	Figure* f = NULL;//pointer because each cycle create new obj of Figure from heap, FL is live or delete this pointer
+	Figure* fn = RAND_CHOOSE_FIGURE();//pointer for next figure
+	fn->MOVE(300, 50, 1);//move next figure to right window
 	FloorArray floor_array;
 
 	while (window_.isOpen())
@@ -59,9 +61,15 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 //			f = new Figure(Figure::zz, 310, 10);
 //			f = new Figure(Figure::t, 310, 60);
 //			f = new Figure(1, 310, 60);
-			f = RAND_CHOOSE_FIGURE();
-			FL = true;
+//			f = RAND_CHOOSE_FIGURE();
+			
 			SPEED_FDOWN = .05f;
+			FL = true;
+
+			f = fn;//create new figure from next figure by copy
+			f->MOVE(-300, -50, 1);//move it to start position
+			fn = RAND_CHOOSE_FIGURE();//create new next position
+			fn->MOVE(300, 50, 1);//move it to right window
 		}
 
 		sf::Event event;
@@ -87,17 +95,20 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-//				f->ROTATE();
 				if (FL) floor_array.ROTATE(*f);
 			}
 		}
 
-		if (FL) f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
+		if (FL)
+		{
+			f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
+			
+			//collision of figures whith bottom array, exit game if return 1, it means overload bottom array, delete shape array from heap in destructor of FloorArray
+			if (floor_array.BOTTOM_COLLISION(*f) == 1) return 1;
+		}
 
-		if (FL) floor_array.BOTTOM_COLLISION(*f);//collision of figures whith bottom array
 		if (!FL) floor_array.MARK_FOR_DEL_LINES();
 		if (LINES_FOR_DEL) floor_array.DEL_LINES();//Inside is LINES_FOR_DEL = 0;//discharge to default num of global lines for delete
-//		floor_array.GRAVITY(0, SPEED_FDOWN, time);
 
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->MOVE(0, 0.1f, time);*/
@@ -110,19 +121,26 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 /*		for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 			shape[i]->DRAW(window_);*/
 
-		if (FL) f->DRAW(window_);
+		if (FL)
+		{
+			f->DRAW(window_);
+			fn->DRAW(window_);
+		}
+
 		if (!FL) delete f;
 
 		floor_array.DRAW(window_);
 
 		window_.display();
 
-//		window_.setKeyRepeatEnabled(false);
+//		std::cout << fn->type << std::endl;
+//		std::cout << floor_array.SZ() << std::endl;
 	}
 
 /*	for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
 		delete shape[i];*/
 	if (FL) delete f;
+	if (FL) delete fn;
 
 	return 0;
 }

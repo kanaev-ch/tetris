@@ -19,13 +19,24 @@ FloorArray::~FloorArray()
 	delete[]shape;//free heap
 }
 
+size_t FloorArray::SZ()const
+{
+	return sz;
+}
+
 //void FloorArray::COLLISION(Figure * f_)
-void FloorArray::BOTTOM_COLLISION(Figure & f_)//func collision of Figures cubes and bottom Cubes
+
+//func collision of Figures cubes and bottom Cubes, if return 1 exit, it meand overload bottom array, delete shape array from heap in destructor
+int FloorArray::BOTTOM_COLLISION(Figure & f_)
 {
 	size_t old_sz = sz;//save temp old size arr
 	for (size_t i = 0; i < old_sz; i++)
 	{
-		if (sz >= 160) exit(0);//Temporary PLUG for exit if array of CUBEs overload, means this cycle (of move down figure) is infinity
+//		if (sz >= 160) exit(0);//Temporary PLUG for exit if array of CUBEs overload, means this cycle (of move down figure) is infinity
+		if (sz >= 160)
+		{
+			return 1;
+		}
 		if ( f_.CUBE1().Y() + 50 > shape[i].Y() && f_.CUBE1().Y() < shape[i].Y() + 50 && f_.CUBE1().X() == shape[i].X() ||
 			 f_.CUBE2().Y() + 50 > shape[i].Y() && f_.CUBE2().Y() < shape[i].Y() + 50 && f_.CUBE2().X() == shape[i].X() ||
 			 f_.CUBE3().Y() + 50 > shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() == shape[i].X() ||
@@ -66,6 +77,7 @@ void FloorArray::BOTTOM_COLLISION(Figure & f_)//func collision of Figures cubes 
 			break;
 		}
 	}
+	return 0;
 }
 
 void FloorArray::MOVE_LEFT_AND_COLLISION(Figure& f_, float x_, float y_, float time_)//func move figure to the left and collision with edges and cross bottom figures
@@ -74,7 +86,7 @@ void FloorArray::MOVE_LEFT_AND_COLLISION(Figure& f_, float x_, float y_, float t
 	if (f_.CUBE1().X() <= WB || f_.CUBE2().X() <= WB || f_.CUBE3().X() <= WB || f_.CUBE4().X() <= WB)//if cross left edge
 	{
 		x = 0;//STOP move if cross, x isn't coord it is OFFSET
-		std::cout << "!!!xxx!!!" << sz << std::endl;
+//		std::cout << "!!!xxx!!!" << sz << std::endl;
 	}
 	for (size_t i = 0; i < sz; i++)
 	{
@@ -84,7 +96,7 @@ void FloorArray::MOVE_LEFT_AND_COLLISION(Figure& f_, float x_, float y_, float t
 			f_.CUBE3().Y() + 50 >= shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() == shape[i].X() + 50 ||
 			f_.CUBE4().Y() + 50 >= shape[i].Y() && f_.CUBE4().Y() < shape[i].Y() + 50 && f_.CUBE4().X() == shape[i].X() + 50)
 		{
-			std::cout << "!!!xxx!!!" << sz << std::endl;
+//			std::cout << "!!!xxx!!!" << sz << std::endl;
 			x = 0;//STOP move if cross, x isn't coord it is OFFSET
 		}
 	}
@@ -100,7 +112,7 @@ void FloorArray::MOVE_RIGHT_AND_COLLISION(Figure& f_, float x_, float y_, float 
 	if (f_.CUBE1().X() + 50 >= WML + WB || f_.CUBE2().X() + 50 >= WML + WB || f_.CUBE3().X() + 50 >= WML + WB || f_.CUBE4().X() + 50 >= WML + WB)//if cross right edge
 	{
 		x = 0;//STOP move if cross, x isn't coord it is OFFSET
-		std::cout << "!!!xxx!!!" << sz << std::endl;
+//		std::cout << "!!!xxx!!!" << sz << std::endl;
 	}
 	for (size_t i = 0; i < sz; i++)
 	{
@@ -110,7 +122,7 @@ void FloorArray::MOVE_RIGHT_AND_COLLISION(Figure& f_, float x_, float y_, float 
 			f_.CUBE3().Y() + 50 >= shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() + 50 == shape[i].X() ||
 			f_.CUBE4().Y() + 50 >= shape[i].Y() && f_.CUBE4().Y() < shape[i].Y() + 50 && f_.CUBE4().X() + 50 == shape[i].X())
 		{
-			std::cout << "!!!xxx!!!" << sz << std::endl;
+//			std::cout << "!!!xxx!!!" << sz << std::endl;
 			x = 0;//STOP move if cross, x isn't coord it is OFFSET
 		}
 	}
@@ -199,7 +211,7 @@ void FloorArray::MARK_LINE(int & n, int line_num)//func for mark 10 same element
 {
 	if (n == 10)
 	{
-		n = 0;
+		n = 0;//n is link, it reset to 0 for non overload LINES_FOR_DEL
 		LINES_FOR_DEL++;//increment count of same lines
 		for (size_t i = 10; i < sz; i++)//chk arr from begin to last founded element and mark elements of line_num
 		{
@@ -213,6 +225,8 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 {
 	int n760 = 0; int n710 = 0; int n660 = 0; int n610 = 0;	int n560 = 0; int n510 = 0;	int n460 = 0; int n410 = 0;
 	int n360 = 0; int n310 = 0;	int n260 = 0; int n210 = 0;	int n160 = 0; int n110 = 0;	int n60 = 0;//counters for chk if inline Cubes are 10
+
+	int k = 0;//var for index DEL_Y_ARR[k]
 
 	for (size_t i = 10; i < sz; i++)//chk floor arr if inline are 10 same elements
 	{
@@ -232,7 +246,67 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 		if (shape[i].Y() == 160) n160++;
 		if (shape[i].Y() == 110) n110++;
 		if (shape[i].Y() == 60) n60++;
+
 		//Block of mark if elements inline are 10
+		//DEL_Y_ARR[] the array is replenished in this block
+		if (n760 == 10)
+		{
+			MARK_LINE(n760, 760); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n710 == 10)
+		{
+			MARK_LINE(n710, 710); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n660 == 10)
+		{
+			MARK_LINE(n660, 660); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n610 == 10)
+		{
+			MARK_LINE(n610, 610); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n560 == 10)
+		{
+			MARK_LINE(n560, 560); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n510 == 10)
+		{
+			MARK_LINE(n510, 510); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n460 == 10)
+		{
+			MARK_LINE(n460, 460); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n410 == 10)
+		{
+			MARK_LINE(n410, 410); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n360 == 10)
+		{
+			MARK_LINE(n360, 360); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n310 == 10)
+		{
+			MARK_LINE(n310, 310); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n260 == 10)
+		{
+			MARK_LINE(n260, 260); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n210 == 10)
+		{
+			MARK_LINE(n210, 210); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n160 == 10)
+		{
+			MARK_LINE(n160, 160); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+		if (n60 == 10)
+		{
+			MARK_LINE(n60, 60); DEL_Y_ARR[k] = shape[i].Y(); k++;
+		}
+
+/*		//Block of mark if elements inline are 10
 		if (n760 == 10)	MARK_LINE(n760, 760);
 		if (n710 == 10)	MARK_LINE(n710, 710);
 		if (n660 == 10)	MARK_LINE(n660, 660);
@@ -246,7 +320,7 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 		if (n260 == 10)	MARK_LINE(n260, 260);
 		if (n210 == 10)	MARK_LINE(n210, 210);
 		if (n160 == 10)	MARK_LINE(n160, 160);
-		if (n60 == 10)	MARK_LINE(n60, 60);
+		if (n60 == 10)	MARK_LINE(n60, 60);*/
 /*		{
 			n760 = 0;
 			LINES_FOR_DEL++;
@@ -292,10 +366,21 @@ void FloorArray::MARK_FOR_DEL_LINES()//func chk all lines and mark them for remo
 					shape[i].SAME(true);
 			}
 		}*/
-		if (shape[i].SAME())
-			std::cout << shape[i].Y() << " ";
+//		if (shape[i].SAME())
+//			std::cout << shape[i].Y() << " ";
 	}
-	std::cout << LINES_FOR_DEL << "\n";
+//	std::cout << LINES_FOR_DEL << "\n";
+}
+
+static void sort_arr(float a[], int m)//func do Sort Ascending of arr, array members must not be zeros!!!
+{
+	int i, j; 
+	float ex;
+	for (i = m - 1; i > 0; --i)
+	{
+		for (j = 0; j < i; ++j)
+			a[j] > a[i] && (ex = a[j]) && (a[j] = a[i]) && (a[i] = ex);//if need sort descending change a[j] < a[i]
+	}
 }
 
 void FloorArray::DEL_LINES()//func remove marked elements
@@ -303,38 +388,61 @@ void FloorArray::DEL_LINES()//func remove marked elements
 	size_t new_sz = sz - LINES_FOR_DEL * 10;//new lower size of arr
 	Cube* p = new Cube[new_sz];//new lower arr
 	int j = 0;//var for increment new arr
-	float s = 0;//var for memory first same Y, in future all upper elements move down
+//	float s = 0;//var for memory first same Y, in future all upper elements move down
+
 	for (size_t i = 0; i < sz; i++)//cycle of ald arr
 	{
+//		if (shape[i].SAME()) { if (!s) s = shape[i].Y(); }//remember first same Y
+
 		if (!shape[i].SAME())//if not marked -> copy to new arr
 		{
 			p[j] = shape[i]; //copy to new arr
 			j++;//increment old arr
 		}
 
-		if (shape[i].SAME()) { if (!s) s = shape[i].Y(); }//remember first same Y
+//		if (shape[i].SAME()) { if (!s) s = shape[i].Y(); }//remember first same Y
 	}
 	delete[]shape;//remove old arr
 	shape = p;//init old to new
 	sz = new_sz;//new lower size of arr
-	int l = LINES_FOR_DEL;//temp var number of lines for delete
+//	int l = LINES_FOR_DEL;//temp var number of lines for delete
 	LINES_FOR_DEL = 0;//discharge to default num of global lines for delete
 
-	//THIS BLOCK MUST BE REPROGRAMMING, MAY BE NOT
-	for (size_t i = 10; i < sz; i++)//chk all new arr for move all elements down
+	//THIS BLOCK MUST BE REPROGRAMMING, BUG IS HERE
+/*	for (size_t i = 10; i < sz; i++)//chk all new arr for move all elements down
 	{
 		if (shape[i].Y() < s)
 		{
 			shape[i].MOVE(0, float(l) * 50, 1);//how many lines move down
 			shape[i].SETPOSITION(shape[i].X(), shape[i].Y());//set new position of Cubes for draw
 		}
-	}
-}
+	}*/
 
-/*void FloorArray::GRAVITY(float x_, float y_, float time_)
-{
-	;
-}*/
+	sort_arr(DEL_Y_ARR, 4);//sort arr of Y corrds by ascending
+
+	//this block move members of new arr to 50px down
+	for (int j = 0; j < 4; j++)//chk all heights (DEL_Y_ARR) from lower
+	{
+		if (DEL_Y_ARR[j] > 10)//move if only DEL_Y_ARR is not empty, 10 is empty
+		{
+			for (size_t i = 10; i < sz; i++)//compare heights (DEL_Y_ARR) with new arr members
+			{
+				if (shape[i].Y() < DEL_Y_ARR[j])
+				{
+					shape[i].MOVE(0, 50, 1);
+					shape[i].SETPOSITION(shape[i].X(), shape[i].Y());
+				}
+			}
+			DEL_Y_ARR[j] = 10;////discharge to default, 10 is default means arr is empty
+		}
+	}
+
+/*	for (int i = 0; i < 4; i++)
+	{
+		std::cout << DEL_Y_ARR[i] << " "; DEL_Y_ARR[i] = 10;
+	}
+	std::cout << std::endl;*/
+}
 
 void FloorArray::DRAW(sf::RenderWindow & window_)const//draw arr of bottom Cubes
 {

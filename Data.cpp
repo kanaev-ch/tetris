@@ -4,7 +4,8 @@
 const float WB = 10;
 
 //size of All screen
-const int W = 650 + int(WB) * 3;
+//const int W = 650 + int(WB) * 3;
+const int W = 750 + int(WB) * 3;
 const int H = 800 + int(WB) * 2;//HEIGHT game screen 800px
 //const int H = 600 + int(WB) * 2;//HEIGHT game screen 600px
 
@@ -20,4 +21,6 @@ bool FL = false;//Figure Live
 
 float SPEED_FDOWN = 0.f;//Speed of falling down figure, value doesn't mean here it changing in game.cpp
 
-extern int LINES_FOR_DEL = 0;//Global var count of removing lines
+extern int LINES_FOR_DEL = 0;//Global var count of removing lines, needs for create new arr lower size
+
+extern float DEL_Y_ARR[4] = { 10, 10, 10, 10 };//arr for temporary storage Y coords of removing lines, it will sort in future, array members must not be zeros!!!

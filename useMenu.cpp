@@ -19,7 +19,7 @@ int MENU(sf::RenderWindow & window_)//func of main menu, game calls inside
 
 		window_.clear();
 
-		game(window_, main_rect_left, main_rect_right);//call game func from menu
+		if (game(window_, main_rect_left, main_rect_right)) return 0;//call game func from menu
 
 		window_.display();
 	}

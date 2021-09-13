@@ -30,7 +30,7 @@ public:
 	Cube & CUBE4();
 
 	void DRAW(sf::RenderWindow&)const;
-//	void MOVE(float, float, float);
+	void MOVE(float, float, float);
 	void ROTATE();
 	void MOVE_DOWN(float, float, float);
 };

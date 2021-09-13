@@ -16,3 +16,5 @@ extern bool FL;
 extern float SPEED_FDOWN;
 
 extern int LINES_FOR_DEL;
+
+extern float DEL_Y_ARR[4];

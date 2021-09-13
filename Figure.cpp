@@ -80,13 +80,13 @@ void Figure::DRAW(sf::RenderWindow & window_)const
 	cube4.DRAW(window_);
 }
 
-/*void Figure::MOVE(float x_, float y_, float time_)
+void Figure::MOVE(float x_, float y_, float time_)
 {
-	cube1.MOVE(x, y, time_);
-	cube2.MOVE(x, y, time_);
-	cube3.MOVE(x, y, time_);
-	cube4.MOVE(x, y, time_);
-}*/
+	cube1.MOVE(x_, y_, time_);
+	cube2.MOVE(x_, y_, time_);
+	cube3.MOVE(x_, y_, time_);
+	cube4.MOVE(x_, y_, time_);
+}
 
 void Figure::ROTATE()//func of simple rotate figures without check collision with edges and bottom array, this functional in FloorArray::ROTATE and it calls this func after check
 {
