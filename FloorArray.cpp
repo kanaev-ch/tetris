@@ -34,7 +34,7 @@ int FloorArray::BOTTOM_COLLISION(Figure & f_)
 	{
 
 		//Block End Game
-		if (shape[i].Y() <= 160)//End Game and exit if some of bottom cubes upper then 160 by Y, it's third Cube by Y
+		if (shape[i].Y() <= 210)//End Game and exit if some of bottom cubes upper then 160 by Y, it's third Cube by Y
 		{
 			return 1;
 		}

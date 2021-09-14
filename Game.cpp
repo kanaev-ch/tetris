@@ -34,8 +34,10 @@ void DRAW_MAIN_RECT(sf::RenderWindow& window_, sf::RectangleShape& main_rect_, f
 }
 
 //main game func
-int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::RectangleShape& main_rect_right_)
+int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::RectangleShape& main_rect_right_, Score & score_)
 {
+	FL = false;//be sure to reset the flag!!! Figure must not be alive in beginning of GAME!!!
+	SCORES = 0;//reset the Scores in beginning of the Game
 	sf::Clock clock;
 
 /*	Shape* shape[2];
@@ -147,12 +149,16 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 		floor_array.DRAW(window_);
 
+//		score_.DRAW(window_);
+		score_.DRAW_NEXT_FIG_STR(window_, 550, 20);
+		score_.DRAW_SCORE(window_, 550, 260);
+
 		window_.display();
 
 //		std::cout << fn->type << std::endl;
 //		std::cout << floor_array.SZ() << std::endl;
 //		std::cout << SCORES << std::endl;
-		std::cout << SPEED_FDOWN << " " << SCORES << std::endl;
+//		std::cout << SPEED_FDOWN << " " << SCORES << std::endl;
 	}
 
 /*	for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)
