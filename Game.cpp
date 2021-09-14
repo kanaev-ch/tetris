@@ -48,6 +48,7 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 	Figure* fn = RAND_CHOOSE_FIGURE();//pointer for next figure
 	fn->MOVE(300, 50, 1);//move next figure to right window
 	FloorArray floor_array;
+	float temp_speed = 0;//var for temp speed, it init by global SPEED_FDOWN
 
 	while (window_.isOpen())
 	{
@@ -63,7 +64,8 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 //			f = new Figure(1, 310, 60);
 //			f = RAND_CHOOSE_FIGURE();
 			
-			SPEED_FDOWN = .05f;
+//			SPEED_FDOWN = .05f;
+			temp_speed = SPEED_FDOWN;
 			FL = true;
 
 			f = fn;//create new figure from next figure by copy
@@ -91,7 +93,16 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				SPEED_FDOWN = 1.f;
+//				SPEED_FDOWN = 1.f;
+				temp_speed = 1.f;
+			}
+			if (event.type == sf::Event::KeyReleased)
+			{
+				if (event.key.code == sf::Keyboard::Down)
+				{
+//					SPEED_FDOWN = .05f;
+					temp_speed = SPEED_FDOWN;
+				}
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
@@ -101,10 +112,15 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 		if (FL)
 		{
-			f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
+//			f->MOVE_DOWN(0, SPEED_FDOWN, time);//figure move down
+			f->MOVE_DOWN(0, temp_speed, time);//figure move down
 			
 			//collision of figures whith bottom array, exit game if return 1, it means overload bottom array, delete shape array from heap in destructor of FloorArray
-			if (floor_array.BOTTOM_COLLISION(*f) == 1) return 1;
+			if (floor_array.BOTTOM_COLLISION(*f) == 1)
+			{
+				delete f; delete fn;//clear HEAP of Figures
+				return 1;
+			}
 		}
 
 		if (!FL) floor_array.MARK_FOR_DEL_LINES();
@@ -135,6 +151,8 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 
 //		std::cout << fn->type << std::endl;
 //		std::cout << floor_array.SZ() << std::endl;
+//		std::cout << SCORES << std::endl;
+		std::cout << SPEED_FDOWN << " " << SCORES << std::endl;
 	}
 
 /*	for (int i = 0; i < sizeof(shape) / sizeof(shape[0]); i++)

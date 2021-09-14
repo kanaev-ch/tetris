@@ -32,11 +32,17 @@ int FloorArray::BOTTOM_COLLISION(Figure & f_)
 	size_t old_sz = sz;//save temp old size arr
 	for (size_t i = 0; i < old_sz; i++)
 	{
-//		if (sz >= 160) exit(0);//Temporary PLUG for exit if array of CUBEs overload, means this cycle (of move down figure) is infinity
-		if (sz >= 160)
+
+		//Block End Game
+		if (shape[i].Y() <= 160)//End Game and exit if some of bottom cubes upper then 160 by Y, it's third Cube by Y
 		{
 			return 1;
 		}
+/*		if (sz >= 160)//Temporary PLUG for exit if array of CUBEs overload, means this cycle (of move down figure) is infinity
+		{
+			return 1;
+		}*/
+
 		if ( f_.CUBE1().Y() + 50 > shape[i].Y() && f_.CUBE1().Y() < shape[i].Y() + 50 && f_.CUBE1().X() == shape[i].X() ||
 			 f_.CUBE2().Y() + 50 > shape[i].Y() && f_.CUBE2().Y() < shape[i].Y() + 50 && f_.CUBE2().X() == shape[i].X() ||
 			 f_.CUBE3().Y() + 50 > shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() == shape[i].X() ||
@@ -425,6 +431,9 @@ void FloorArray::DEL_LINES()//func remove marked elements
 	{
 		if (DEL_Y_ARR[j] > 10)//move if only DEL_Y_ARR is not empty, 10 is empty
 		{
+			SCORES += 10;//increase speed of falling Figures
+			if (!(SCORES % 100)) SPEED_FDOWN += .02f;//increase Figures Speed Down if Scores == 100, 200 and more by 100 div%
+
 			for (size_t i = 10; i < sz; i++)//compare heights (DEL_Y_ARR) with new arr members
 			{
 				if (shape[i].Y() < DEL_Y_ARR[j])

@@ -19,8 +19,10 @@ const float HMR = H - WB*2;
 
 bool FL = false;//Figure Live
 
-float SPEED_FDOWN = 0.f;//Speed of falling down figure, value doesn't mean here it changing in game.cpp
+float SPEED_FDOWN = .05f;//Speed of falling down figure, value increasung in FloorArray::DEL_LINES by increasing Scores
 
-extern int LINES_FOR_DEL = 0;//Global var count of removing lines, needs for create new arr lower size
+int LINES_FOR_DEL = 0;//Global var count of removing lines, needs for create new arr lower size
 
-extern float DEL_Y_ARR[4] = { 10, 10, 10, 10 };//arr for temporary storage Y coords of removing lines, it will sort in future, array members must not be zeros!!!
+float DEL_Y_ARR[4] = { 10, 10, 10, 10 };//arr for temporary storage Y coords of removing lines, it will sort in future, array members must not be zeros!!!
+
+int SCORES = 0;
