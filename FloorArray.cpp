@@ -5,10 +5,12 @@
 FloorArray::FloorArray()
 	:sz(10)//Create default bottom arr of 10 elements
 {
+	cube_texture.loadFromFile("Tetris.png");
+
 	shape = new Cube[sz];//from heap
+
 	for (size_t i = 0; i < sz; i++)
 	{
-//		shape[i] = Cube(float(i) * 1 * 50+10, H-WB-50);
 		shape[i] = Cube(float(i) * 1 * 50+10, float(H));
 	}
 }
@@ -24,8 +26,6 @@ size_t FloorArray::SZ()const
 	return sz;
 }
 
-//void FloorArray::COLLISION(Figure * f_)
-
 //func collision of Figures cubes and bottom Cubes, if return 1 exit, it meand overload bottom array, delete shape array from heap in destructor
 int FloorArray::BOTTOM_COLLISION(Figure & f_)
 {
@@ -34,7 +34,13 @@ int FloorArray::BOTTOM_COLLISION(Figure & f_)
 	{
 
 		//Block End Game
-		if (shape[i].Y() <= 210)//End Game and exit if some of bottom cubes upper then 160 by Y, it's third Cube by Y
+//		if (shape[i].Y() <= 160)//Simple End Game and exit if some of bottom cubes upper then 160 by Y, it's third Cube by Y
+		//IF Block of End Game NEED TO DEBUG!!!
+		if (f_.CUBE1().Y() + 50 > shape[i].Y() && f_.CUBE1().X() == shape[i].X() && shape[i].Y() <= 160 ||
+			f_.CUBE2().Y() + 50 > shape[i].Y() && f_.CUBE2().X() == shape[i].X() && shape[i].Y() <= 160 ||
+			f_.CUBE3().Y() + 50 > shape[i].Y() && f_.CUBE3().X() == shape[i].X() && shape[i].Y() <= 160 ||
+			f_.CUBE4().Y() + 50 > shape[i].Y() && f_.CUBE4().X() == shape[i].X() && shape[i].Y() <= 160 
+			)
 		{
 			return 1;
 		}
@@ -48,7 +54,7 @@ int FloorArray::BOTTOM_COLLISION(Figure & f_)
 			 f_.CUBE3().Y() + 50 > shape[i].Y() && f_.CUBE3().Y() < shape[i].Y() + 50 && f_.CUBE3().X() == shape[i].X() ||
 			 f_.CUBE4().Y() + 50 > shape[i].Y() && f_.CUBE4().Y() < shape[i].Y() + 50 && f_.CUBE4().X() == shape[i].X() )
 		{
-//			FL = false;//Figure not live
+
 			sz += 4;//increase arr size
 			Cube* p = new Cube[sz];//create new arr from heap
 			for (size_t j = 0; j < old_sz; j++)//copy from old to new arr
@@ -142,7 +148,7 @@ int FloorArray::ROTATE(Figure& f_)//Func of rotate Figures and collision with ed
 {
 	bool r = true;//flag do rotate figure or not
 
-	if (f_.type == Figure::cube)//deny for rotate if CUBE, it doesn't rotate
+	if (f_.type == Figure::O)//deny for rotate if CUBE, it doesn't rotate
 	{
 		r = false;
 		return 0;//exit if Cube, don't exec down code
@@ -151,8 +157,8 @@ int FloorArray::ROTATE(Figure& f_)//Func of rotate Figures and collision with ed
 	//block of collision with bottom array
 	for (size_t i = 10; i < sz; i++)
 	{
-		//Collision Gstick with bottom array in rotate
-		if (f_.type == Figure::gstick && (f_.position == Figure::up || f_.position == Figure::down))
+		//Collision L with bottom array in rotate
+		if (f_.type == Figure::L && (f_.position == Figure::up || f_.position == Figure::down))
 		{
 			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
 				r = false;
@@ -160,8 +166,8 @@ int FloorArray::ROTATE(Figure& f_)//Func of rotate Figures and collision with ed
 				r = false;
 		}
 
-		//Collision Stick with bottom array in rotate
-		if (f_.type == Figure::stick && f_.position == Figure::up)
+		//Collision l with bottom array in rotate
+		if (f_.type == Figure::l && f_.position == Figure::up)
 		{
 			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
 				r = false;
@@ -171,15 +177,31 @@ int FloorArray::ROTATE(Figure& f_)//Func of rotate Figures and collision with ed
 				r = false;
 		}
 
-		//Collision ZZ with bottom array in rotate
-		if (f_.type == Figure::zz && f_.position == Figure::left)
+		//Collision z with bottom array in rotate
+		if (f_.type == Figure::z && f_.position == Figure::left)
 		{
 			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
 				r = false;
 		}
 
 		//Collision T with bottom array in rotate
-		if (f_.type == Figure::t && (f_.position == Figure::left || f_.position == Figure::right))
+		if (f_.type == Figure::T && (f_.position == Figure::left || f_.position == Figure::right))
+		{
+			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+			if (f_.CUBE1().X() + 50 == shape[i].X() && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+		}
+
+		//Collision s with bottom array in rotate
+		if (f_.type == Figure::s && f_.position == Figure::left)
+		{
+			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
+				r = false;
+		}
+
+		//Collision J with bottom array in rotate
+		if (f_.type == Figure::J && (f_.position == Figure::up || f_.position == Figure::down))
 		{
 			if (f_.CUBE1().X() == shape[i].X() + 50 && f_.CUBE1().Y() + 50 >= shape[i].Y() && f_.CUBE1().Y() <= shape[i].Y() + 50)
 				r = false;
@@ -189,24 +211,33 @@ int FloorArray::ROTATE(Figure& f_)//Func of rotate Figures and collision with ed
 	}
 
 	//block of collision with edges
-	if (f_.type == Figure::gstick)//deny for rotate if Gstick and at the both edges
+	if (f_.type == Figure::L)//deny for rotate if L and at the both edges
 	{
 		if (f_.CUBE1().X() == WB) r = false;
 		if (f_.CUBE1().X() + 50 == WML + WB) r = false;
 	}
-	if (f_.type == Figure::stick)//deny for rotate if Stick and at the both edges
+	if (f_.type == Figure::l)//deny for rotate if l and at the both edges
 	{
 		if (f_.CUBE1().X() == WB) r = false;
 		if (f_.CUBE1().X() + 100 >= WML + WB) r = false;
 	}
-	if (f_.type == Figure::zz)//deny for rotate if ZZ and at the both edges
+	if (f_.type == Figure::z)//deny for rotate if z and at the both edges
 	{
 		if (f_.CUBE1().X() == WB) r = false;
 	}
-	if (f_.type == Figure::t)//deny for rotate if T and at the both edges
+	if (f_.type == Figure::T)//deny for rotate if T and at the both edges
 	{
 		if (f_.CUBE1().X() == WB) r = false;
 		if (f_.CUBE1().X() + 50 >= WML + WB) r = false;
+	}
+	if (f_.type == Figure::s)//deny for rotate if z and at the both edges
+	{
+		if (f_.CUBE1().X() == WB) r = false;
+	}
+	if (f_.type == Figure::J)//deny for rotate if L and at the both edges
+	{
+		if (f_.CUBE1().X() == WB) r = false;
+		if (f_.CUBE1().X() + 50 == WML + WB) r = false;
 	}
 
 	if (r) f_.ROTATE();//if flag true -> rotate figure, ROTATE fun inside Figure Class
@@ -396,7 +427,7 @@ void FloorArray::DEL_LINES()//func remove marked elements
 	int j = 0;//var for increment new arr
 //	float s = 0;//var for memory first same Y, in future all upper elements move down
 
-	for (size_t i = 0; i < sz; i++)//cycle of ald arr
+	for (size_t i = 0; i < sz; i++)//cycle of old arr
 	{
 //		if (shape[i].SAME()) { if (!s) s = shape[i].Y(); }//remember first same Y
 
@@ -455,9 +486,37 @@ void FloorArray::DEL_LINES()//func remove marked elements
 
 void FloorArray::DRAW(sf::RenderWindow & window_)const//draw arr of bottom Cubes
 {
-//	if (sz)
-//	{
-		for (size_t i = 0; i < sz; i++)
+	if (sz)
+	{
+		//Block of simple drawing bottom array if it's without sprites and textures
+//		for (size_t i = 0; i < sz; i++)
+//			shape[i].DRAW(window_);
+
+		//Block of drawing bottom array if it have sprites-textures
+		for (size_t i = 10; i < sz; i++)
+		{
+			sf::Sprite sprite;
+			sprite.setTexture(cube_texture);
+
+			sprite.setTextureRect(sf::IntRect(213, 8, 50, 50));//if only ONE sprite-color of bottom cubes
+
+			//block of different sprites-colors bottom Cubes
+/*			int x_spr = 0; int y_spr = 0;
+			switch (shape[i].TYPE_FIGURE())
+			{
+			case 1:	x_spr = 578; y_spr = 331; break;
+			case 2:	x_spr = 7; y_spr = 160; break;
+			case 3:	x_spr = 65; y_spr = 8; break;
+			case 4:	x_spr = 634; y_spr = 130; break;
+			case 5:	x_spr = 292; y_spr = 182; break;
+			case 6:	x_spr = 406; y_spr = 331; break;
+			case 7:	x_spr = 178; y_spr = 274; break;
+			}
+			sprite.setTextureRect(sf::IntRect(x_spr, y_spr, 50, 50));*/
+
+			shape[i].SPRITE(sprite);
+			shape[i].SETPOSITION(shape[i].X(), shape[i].Y());
 			shape[i].DRAW(window_);
-//	}
+		}
+	}
 }

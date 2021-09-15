@@ -12,11 +12,12 @@ private:
 	size_t sz;//size of this arr
 
 	void MARK_LINE(int& n, int);
+
+	sf::Texture cube_texture;
 public:
 	FloorArray();
 	~FloorArray();
 
-//	void COLLISION(Figure *);
 	size_t SZ()const;
 
 	int BOTTOM_COLLISION(Figure &);

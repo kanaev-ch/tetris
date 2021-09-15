@@ -9,18 +9,20 @@ static float TIME(sf::Clock& c_)//func for binding to time
 	return time;
 }
 
-static Figure * RAND_CHOOSE_FIGURE()
+static Figure * RAND_CHOOSE_FIGURE()//func randomly choose type of figure
 {
 	srand((unsigned)time(NULL)); rand(); rand();
 	Figure* p = NULL;
-	int r = rand() % 5 + 1;
+	int r = rand() % 7 + 1;
 	switch (r)
 	{
-	case 1: p = new Figure(Figure::gstick, 310, 60); break;
-	case 2: p = new Figure(Figure::stick, 310, 60); break;
-	case 3: p = new Figure(Figure::cube, 310, 60); break;
-	case 4: p = new Figure(Figure::zz, 310, 10); break;
-	case 5: p = new Figure(Figure::t, 310, 60); break;
+	case 1: p = new Figure(Figure::L, 260, 60); break;
+	case 2: p = new Figure(Figure::l, 260, 60); break;
+	case 3: p = new Figure(Figure::O, 260, 60); break;
+	case 4: p = new Figure(Figure::z, 260, 10); break;
+	case 5: p = new Figure(Figure::T, 260, 60); break;
+	case 6: p = new Figure(Figure::s, 260, 60); break;
+	case 7: p = new Figure(Figure::J, 260, 60); break;
 	}
 	return p;
 }
@@ -47,8 +49,8 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 //	Figure figure(Figure::gstick);
 //	Figure* f = new Figure(Figure::gstick);
 	Figure* f = NULL;//pointer because each cycle create new obj of Figure from heap, FL is live or delete this pointer
-	Figure* fn = RAND_CHOOSE_FIGURE();//pointer for next figure
-	fn->MOVE(300, 50, 1);//move next figure to right window
+	Figure* fn = RAND_CHOOSE_FIGURE();//pointer for next figure, it will be random
+	fn->MOVE(350, 50, 1);//move next figure to right window
 	FloorArray floor_array;
 	float temp_speed = 0;//var for temp speed, it init by global SPEED_FDOWN
 
@@ -58,12 +60,14 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 	
 		if (!FL)
 		{
-//			f = new Figure(Figure::gstick, 310, 60);
-//			f = new Figure(Figure::stick, 310, 60);
-//			f = new Figure(Figure::cube, 310, 60);
-//			f = new Figure(Figure::zz, 310, 10);
-//			f = new Figure(Figure::t, 310, 60);
-//			f = new Figure(1, 310, 60);
+//			f = new Figure(Figure::L, 260, 60);
+//			f = new Figure(Figure::l, 260, 60);
+//			f = new Figure(Figure::O, 260, 60);
+//			f = new Figure(Figure::z, 260, 10);
+//			f = new Figure(Figure::T, 260, 60);
+//			f = new Figure(Figure::s, 260, 60);
+//			f = new Figure(Figure::J, 260, 60);
+//			f = new Figure(1, 260, 60);
 //			f = RAND_CHOOSE_FIGURE();
 			
 //			SPEED_FDOWN = .05f;
@@ -71,9 +75,9 @@ int game(sf::RenderWindow& window_, sf::RectangleShape& main_rect_left_, sf::Rec
 			FL = true;
 
 			f = fn;//create new figure from next figure by copy
-			f->MOVE(-300, -50, 1);//move it to start position
+			f->MOVE(-350, -50, 1);//move it to start position
 			fn = RAND_CHOOSE_FIGURE();//create new next position
-			fn->MOVE(300, 50, 1);//move it to right window
+			fn->MOVE(350, 50, 1);//move it to right window
 		}
 
 		sf::Event event;

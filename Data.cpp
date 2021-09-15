@@ -25,4 +25,4 @@ int LINES_FOR_DEL = 0;//Global var count of removing lines, needs for create new
 
 float DEL_Y_ARR[4] = { 10, 10, 10, 10 };//arr for temporary storage Y coords of removing lines, it will sort in future, array members must not be zeros!!!
 
-int SCORES = 0;
+int SCORES = 0;//Global Scores of the game

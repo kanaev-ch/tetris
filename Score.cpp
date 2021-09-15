@@ -70,21 +70,3 @@ void Score::DRAW_NEXT_FIG_STR(sf::RenderWindow& window_, float x_, float y_)
 
 	window_.draw(next_figure);
 }
-
-/*void Score::DRAW(sf::RenderWindow& window_)
-{
-	score.setPosition(x, y);//set position of text
-	score_num.setPosition(x + 70, y);
-	next_figure.setPosition(x, y - 280);
-
-	char_score[0] = SCORES % 100000 / 10000 + 48;
-	char_score[1] = SCORES % 10000 / 1000 + 48;
-	char_score[2] = SCORES % 1000 / 100 + 48;
-	char_score[3] = SCORES % 100 / 10 + 48;
-	char_score[4] = SCORES % 10 + 48;
-	score_num.setString(char_score);
-
-	window_.draw(score);
-	window_.draw(score_num);
-	window_.draw(next_figure);
-}*/
